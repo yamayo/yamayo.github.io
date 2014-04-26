@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>git rebase --onto で派生元ブランチの変更 - northaven</title>
+  <title>AWS SDK for Ruby を使ってコンテンツを S3 に gzip 圧縮して保存する - northaven</title>
   <meta name="author" content="yamayo">
 
   
-  <meta name="description" content="本来 master ブランチから派生させるべきだった topic ブランチを、間違って develop ブランチから派生させてしまった場合、rebase &mdash;onto を使って、派生元を master ブランチに変更できる。 1
-$ git rebase --onto master &hellip;">
+  <meta name="description" content="S3 で gzip コンテンツに対応させる方法は、オブジェクトの Metadata に対して、Content-Encoding を指定できるのでこれを使います。 AWS SDK for Ruby を使って、gzip コンテンツを upload/download するサンプルを Gist &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ $ git rebase --onto master &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://yamayo.github.io/blog/2013/12/19/sample-blog">
+  <link rel="canonical" href="http://yamayo.github.io/blog/2013/12/16/aws-sdk-for-ruby-to-gzip">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="northaven" type="application/atom+xml">
@@ -79,7 +78,7 @@ $ git rebase --onto master &hellip;">
   
   <header>
     
-      <h1 class="entry-title">git rebase --onto で派生元ブランチの変更</h1>
+      <h1 class="entry-title">AWS SDK for Ruby を使ってコンテンツを S3 に gzip 圧縮して保存する</h1>
     
     
       <p class="meta">
@@ -95,18 +94,30 @@ $ git rebase --onto master &hellip;">
   
 
 
-<time datetime="2013-12-19T16:53:13+09:00" pubdate data-updated="true">2013/12/19</time>
+<time datetime="2013-12-16T03:01:55+09:00" pubdate data-updated="true">2013/12/16</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>本来 master ブランチから派生させるべきだった topic ブランチを、間違って develop ブランチから派生させてしまった場合、rebase &mdash;onto を使って、派生元を master ブランチに変更できる。</p>
+<div class="entry-content"><p>S3 で gzip コンテンツに対応させる方法は、オブジェクトの Metadata に対して、Content-Encoding を指定できるのでこれを使います。
+<img src="/images/posts/2014-12-16/s3-metadata.png" alt="s3-metadata" /></p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ git rebase --onto master develop topic</span></code></pre></td></tr></table></div></figure>
+<p>AWS SDK for Ruby を使って、gzip コンテンツを upload/download するサンプルを Gist に上げました。<br>
+<a href="https://gist.github.com/yamayo/7981897" target="_blank">AWS S3 upload/download with gzip</a></p>
 
+<div><script src='https://gist.github.com/7981897.js'></script>
+<noscript><pre><code># A sample Gemfile
+source &#39;https://rubygems.org&#39;
+
+gem &#39;aws-sdk&#39;
+gem &#39;pit&#39;</code></pre></noscript></div>
+
+
+<p>ちなみに、Google Developers によるとオーバーヘッドが発生するため、圧縮するファイルサイズの最小範囲は 150 〜 1000 バイトが推奨されています。<br></p>
+
+<p><a href="https://developers.google.com/speed/docs/best-practices/payload?hl=ja#GzipCompression" target="_blank"><a href="https://developers.google.com/speed/docs/best-practices/payload?hl=ja#GzipCompression">https://developers.google.com/speed/docs/best-practices/payload?hl=ja#GzipCompression</a></a></p>
 </div>
 
 
@@ -129,16 +140,16 @@ $ git rebase --onto master &hellip;">
   
 
 
-<time datetime="2013-12-19T16:53:13+09:00" pubdate data-updated="true">2013/12/19</time>
+<time datetime="2013-12-16T03:01:55+09:00" pubdate data-updated="true">2013/12/16</time>
       
 
 
     </p>
     
       <div class="sharing">
-  <a href="http://b.hatena.ne.jp/entry/http://yamayo.github.io/blog/2013/12/19/sample-blog/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+  <a href="http://b.hatena.ne.jp/entry/http://yamayo.github.io/blog/2013/12/16/aws-sdk-for-ruby-to-gzip/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://yamayo.github.io/blog/2013/12/19/sample-blog/" data-via="" data-counturl="http://yamayo.github.io/blog/2013/12/19/sample-blog/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://yamayo.github.io/blog/2013/12/16/aws-sdk-for-ruby-to-gzip/" data-via="" data-counturl="http://yamayo.github.io/blog/2013/12/16/aws-sdk-for-ruby-to-gzip/" >Tweet</a>
   
   
   
@@ -149,6 +160,8 @@ $ git rebase --onto master &hellip;">
     
     <p class="meta">
       
+      
+        <a class="basic-alignment right" href="/blog/2013/12/19/git-rebase-onto/" title="Next Post: git rebase --onto で派生元ブランチの変更">git rebase --onto で派生元ブランチの変更 &raquo;</a>
       
     </p>
   </footer>
@@ -164,7 +177,11 @@ $ git rebase --onto master &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2013/12/19/sample-blog/">git rebase --onto で派生元ブランチの変更</a>
+        <a href="/blog/2013/12/19/git-rebase-onto/">git rebase --onto で派生元ブランチの変更</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/16/aws-sdk-for-ruby-to-gzip/">AWS SDK for Ruby を使ってコンテンツを S3 に gzip 圧縮して保存する</a>
       </li>
     
   </ul>

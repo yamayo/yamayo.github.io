@@ -4,7 +4,7 @@
   <title><![CDATA[northaven]]></title>
   <link href="http://yamayo.github.io/atom.xml" rel="self"/>
   <link href="http://yamayo.github.io/"/>
-  <updated>2014-04-27T02:39:00+09:00</updated>
+  <updated>2014-04-27T03:36:36+09:00</updated>
   <id>http://yamayo.github.io/</id>
   <author>
     <name><![CDATA[yamayo]]></name>
@@ -15,14 +15,39 @@
   
   <entry>
     <title type="html"><![CDATA[git rebase --onto で派生元ブランチの変更]]></title>
-    <link href="http://yamayo.github.io/blog/2013/12/19/sample-blog/"/>
+    <link href="http://yamayo.github.io/blog/2013/12/19/git-rebase-onto/"/>
     <updated>2013-12-19T16:53:13+09:00</updated>
-    <id>http://yamayo.github.io/blog/2013/12/19/sample-blog</id>
+    <id>http://yamayo.github.io/blog/2013/12/19/git-rebase-onto</id>
     <content type="html"><![CDATA[<p>本来 master ブランチから派生させるべきだった topic ブランチを、間違って develop ブランチから派生させてしまった場合、rebase &mdash;onto を使って、派生元を master ブランチに変更できる。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>$ git rebase --onto master develop topic</span></code></pre></td></tr></table></div></figure>
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[AWS SDK for Ruby を使ってコンテンツを S3 に gzip 圧縮して保存する]]></title>
+    <link href="http://yamayo.github.io/blog/2013/12/16/aws-sdk-for-ruby-to-gzip/"/>
+    <updated>2013-12-16T03:01:55+09:00</updated>
+    <id>http://yamayo.github.io/blog/2013/12/16/aws-sdk-for-ruby-to-gzip</id>
+    <content type="html"><![CDATA[<p>S3 で gzip コンテンツに対応させる方法は、オブジェクトの Metadata に対して、Content-Encoding を指定できるのでこれを使います。
+<img src="http://yamayo.github.io/images/posts/2014-12-16/s3-metadata.png" alt="s3-metadata" /></p>
+
+<p>AWS SDK for Ruby を使って、gzip コンテンツを upload/download するサンプルを Gist に上げました。<br>
+<a href="https://gist.github.com/yamayo/7981897" target="_blank">AWS S3 upload/download with gzip</a></p>
+
+<div><script src='https://gist.github.com/7981897.js'></script>
+<noscript><pre><code># A sample Gemfile
+source &#39;https://rubygems.org&#39;
+
+gem &#39;aws-sdk&#39;
+gem &#39;pit&#39;</code></pre></noscript></div>
+
+
+<p>ちなみに、Google Developers によるとオーバーヘッドが発生するため、圧縮するファイルサイズの最小範囲は 150 〜 1000 バイトが推奨されています。<br></p>
+
+<p><a href="https://developers.google.com/speed/docs/best-practices/payload?hl=ja#GzipCompression" target="_blank"><a href="https://developers.google.com/speed/docs/best-practices/payload?hl=ja#GzipCompression">https://developers.google.com/speed/docs/best-practices/payload?hl=ja#GzipCompression</a></a></p>
 ]]></content>
   </entry>
   
