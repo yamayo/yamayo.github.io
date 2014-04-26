@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-	<title><![CDATA[northaven]]></title>
-	<link href="http://yamayo.github.io/atom.xml" rel="self"/>
-	<link href="http://yamayo.github.io/"/>
-	<updated>2013-12-19T12:04:59+09:00</updated>
-	<id>http://yamayo.github.io/</id>
-	<author>
-		<name><![CDATA[yamayo]]></name>
-		
-	</author>
-	<generator uri="http://octopress.org/">Octopress</generator>
+  <title><![CDATA[northaven]]></title>
+  <link href="http://yamayo.github.io/atom.xml" rel="self"/>
+  <link href="http://yamayo.github.io/"/>
+  <updated>2014-04-27T02:13:42+09:00</updated>
+  <id>http://yamayo.github.io/</id>
+  <author>
+    <name><![CDATA[yamayo]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
 
-	
+  
+  <entry>
+    <title type="html"><![CDATA[git rebase --onto で派生元ブランチの変更]]></title>
+    <link href="http://yamayo.github.io/blog/2013/12/19/sample-blog/"/>
+    <updated>2013-12-19T16:53:13+09:00</updated>
+    <id>http://yamayo.github.io/blog/2013/12/19/sample-blog</id>
+    <content type="html"><![CDATA[<p>本来 master ブランチから派生させるべきだった topic ブランチを、間違って develop ブランチから派生させてしまった場合、rebase &mdash;onto を使って、派生元を master ブランチに変更できる。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ git rebase --onto master develop topic</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
 </feed>
