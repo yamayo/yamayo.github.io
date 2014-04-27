@@ -4,7 +4,7 @@
   <title><![CDATA[northaven]]></title>
   <link href="http://yamayo.github.io/atom.xml" rel="self"/>
   <link href="http://yamayo.github.io/"/>
-  <updated>2014-04-27T03:36:36+09:00</updated>
+  <updated>2014-04-27T09:01:18+09:00</updated>
   <id>http://yamayo.github.io/</id>
   <author>
     <name><![CDATA[yamayo]]></name>
@@ -14,15 +14,45 @@
 
   
   <entry>
-    <title type="html"><![CDATA[git rebase --onto で派生元ブランチの変更]]></title>
-    <link href="http://yamayo.github.io/blog/2013/12/19/git-rebase-onto/"/>
-    <updated>2013-12-19T16:53:13+09:00</updated>
-    <id>http://yamayo.github.io/blog/2013/12/19/git-rebase-onto</id>
-    <content type="html"><![CDATA[<p>本来 master ブランチから派生させるべきだった topic ブランチを、間違って develop ブランチから派生させてしまった場合、rebase &mdash;onto を使って、派生元を master ブランチに変更できる。</p>
+    <title type="html"><![CDATA[Amazon Linux 上に chef と Vagrant を使って nginx の最新バージョンをプロビジョニングする]]></title>
+    <link href="http://yamayo.github.io/blog/2014/02/23/amazon-linux-nginx-provisioning-chef/"/>
+    <updated>2014-02-23T08:30:31+09:00</updated>
+    <id>http://yamayo.github.io/blog/2014/02/23/amazon-linux-nginx-provisioning-chef</id>
+    <content type="html"><![CDATA[<p>Amazon Linux 上で yum パッケージから nginx の最新バージョンをインストールするには、 /etc/yum.repos.d/nginx.repo に以下を追加する必要があります。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ git rebase --onto master develop topic</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[nginx]
+</span><span class='line'>name=nginx repo
+</span><span class='line'>baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+</span><span class='line'>gpgcheck=0
+</span><span class='line'>enabled=1</span></code></pre></td></tr></table></div></figure>
 
+
+<p>これを chef のレシピでやる必要があるのですが、以下のように書きました。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">yum_repository</span> <span class="s1">&#39;nginx&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">description</span> <span class="s1">&#39;Nginx.org Repository&#39;</span>
+</span><span class='line'>  <span class="n">baseurl</span>     <span class="s1">&#39;http://nginx.org/packages/centos/6/$basearch/&#39;</span>
+</span><span class='line'>  <span class="n">gpgcheck</span>    <span class="kp">false</span>
+</span><span class='line'>  <span class="n">priority</span>    <span class="s1">&#39;1&#39;</span>
+</span><span class='line'>  <span class="n">action</span> <span class="ss">:create</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以下にサンプルをアップしています。<br>
+<a href="https://github.com/yamayo/chef-repo">https://github.com/yamayo/chef-repo</a></p>
 ]]></content>
   </entry>
   
@@ -48,6 +78,19 @@ gem &#39;pit&#39;</code></pre></noscript></div>
 <p>ちなみに、Google Developers によるとオーバーヘッドが発生するため、圧縮するファイルサイズの最小範囲は 150 〜 1000 バイトが推奨されています。<br></p>
 
 <p><a href="https://developers.google.com/speed/docs/best-practices/payload?hl=ja#GzipCompression" target="_blank"><a href="https://developers.google.com/speed/docs/best-practices/payload?hl=ja#GzipCompression">https://developers.google.com/speed/docs/best-practices/payload?hl=ja#GzipCompression</a></a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[git rebase --onto で派生元ブランチの変更]]></title>
+    <link href="http://yamayo.github.io/blog/2013/12/01/git-rebase-onto/"/>
+    <updated>2013-12-01T16:53:13+09:00</updated>
+    <id>http://yamayo.github.io/blog/2013/12/01/git-rebase-onto</id>
+    <content type="html"><![CDATA[<p>本来 master ブランチから派生させるべきだった topic ブランチを、間違って develop ブランチから派生させてしまった場合、rebase &mdash;onto を使って、派生元を master ブランチに変更できる。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ git rebase --onto master develop topic</span></code></pre></td></tr></table></div></figure>
+
 ]]></content>
   </entry>
   
