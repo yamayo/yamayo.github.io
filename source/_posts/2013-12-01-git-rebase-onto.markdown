@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "git rebase --onto で派生元ブランチの変更"
-date: 2013-12-19 16:53:13 +0900
+date: 2013-12-01 16:53:13 +0900
 comments: true
 sharing: true
 categories: 
