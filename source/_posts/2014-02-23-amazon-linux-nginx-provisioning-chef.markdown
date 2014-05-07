@@ -4,7 +4,7 @@ title: "Amazon Linux 上に chef と Vagrant を使って nginx の最新バー�
 date: 2014-02-23 08:30:31 +0900
 comments: true
 sharing: true
-categories: 
+categories: nginx chef
 ---
 
 Amazon Linux 上で yum パッケージから nginx の最新バージョンをインストールするには、 /etc/yum.repos.d/nginx.repo に以下を追加する必要があります。

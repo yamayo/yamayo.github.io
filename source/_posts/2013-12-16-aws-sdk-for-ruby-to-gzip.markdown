@@ -4,7 +4,7 @@ title: "AWS SDK for Ruby を使ってコンテンツを S3 に gzip 圧縮して
 date: 2013-12-16 03:01:55 +0900
 comments: true
 sharing: true
-categories: 
+categories: Ruby S3
 ---
 
 S3 で gzip コンテンツに対応させる方法は、オブジェクトの Metadata に対して、Content-Encoding を指定できるのでこれを使います。
