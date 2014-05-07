@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: nginx | northaven]]></title>
+  <link href="http://yamayo.github.io/blog/categories/nginx/atom.xml" rel="self"/>
+  <link href="http://yamayo.github.io/"/>
+  <updated>2014-05-08T00:20:21+09:00</updated>
+  <id>http://yamayo.github.io/</id>
+  <author>
+    <name><![CDATA[yamayo]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Amazon Linux 上に chef と Vagrant を使って nginx の最新バージョンをプロビジョニングする]]></title>
+    <link href="http://yamayo.github.io/blog/2014/02/23/amazon-linux-nginx-provisioning-chef/"/>
+    <updated>2014-02-23T08:30:31+09:00</updated>
+    <id>http://yamayo.github.io/blog/2014/02/23/amazon-linux-nginx-provisioning-chef</id>
+    <content type="html"><![CDATA[<p>Amazon Linux 上で yum パッケージから nginx の最新バージョンをインストールするには、 /etc/yum.repos.d/nginx.repo に以下を追加する必要があります。</p>
+
+<p><code>
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+gpgcheck=0
+enabled=1
+</code></p>
+
+<p>これを chef のレシピでやる必要があるのですが、以下のように書きました。
+<code>ruby
+yum_repository 'nginx' do
+  description 'Nginx.org Repository'
+  baseurl     'http://nginx.org/packages/centos/6/$basearch/'
+  gpgcheck    false
+  priority    '1'
+  action :create
+end
+</code></p>
+
+<p>以下にサンプルをアップしています。<br>
+<a href="https://github.com/yamayo/chef-repo">https://github.com/yamayo/chef-repo</a></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ruby | northaven]]></title>
+  <link href="http://yamayo.github.io/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://yamayo.github.io/"/>
+  <updated>2014-05-08T00:20:21+09:00</updated>
+  <id>http://yamayo.github.io/</id>
+  <author>
+    <name><![CDATA[yamayo]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[AWS SDK for Ruby を使ってコンテンツを S3 に gzip 圧縮して保存する]]></title>
+    <link href="http://yamayo.github.io/blog/2013/12/16/aws-sdk-for-ruby-to-gzip/"/>
+    <updated>2013-12-16T03:01:55+09:00</updated>
+    <id>http://yamayo.github.io/blog/2013/12/16/aws-sdk-for-ruby-to-gzip</id>
+    <content type="html"><![CDATA[<p>S3 で gzip コンテンツに対応させる方法は、オブジェクトの Metadata に対して、Content-Encoding を指定できるのでこれを使います。
+<img src="/images/posts/2014-12-16/s3-metadata.png" alt="s3-metadata" /></p>
+
+<p>AWS SDK for Ruby を使って、gzip コンテンツを upload/download するサンプルを Gist に上げました。<br>
+<a href="https://gist.github.com/yamayo/7981897" target="_blank">AWS S3 upload/download with gzip</a>
+<div><script src='https://gist.github.com/7981897.js'></script>
+<noscript><pre><code># A sample Gemfile
+source &#39;https://rubygems.org&#39;
+
+gem &#39;aws-sdk&#39;
+gem &#39;pit&#39;</code></pre></noscript></div>
+</p>
+
+<p>ちなみに、Google Developers によるとオーバーヘッドが発生するため、圧縮するファイルサイズの最小範囲は 150 〜 1000 バイトが推奨されています。<br></p>
+
+<p><a href="https://developers.google.com/speed/docs/best-practices/payload?hl=ja#GzipCompression" target="_blank"><a href="https://developers.google.com/speed/docs/best-practices/payload?hl=ja#GzipCompression">https://developers.google.com/speed/docs/best-practices/payload?hl=ja#GzipCompression</a></a></p>
+]]></content>
+  </entry>
+  
+</feed>
