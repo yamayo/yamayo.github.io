@@ -4,7 +4,7 @@ title: "Rails 4.1 の enum と validation"
 date: 2014-05-08 00:23:41 +0900
 comments: true
 sharing: true
-published: false
+published: true
 categories: Rails
 ---
 
