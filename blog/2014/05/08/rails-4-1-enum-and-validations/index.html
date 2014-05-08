@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>northaven</title>
+  <title>Rails 4.1 の enum と validation - northaven</title>
   <meta name="author" content="yamayo">
 
   
@@ -26,7 +26,7 @@ class User &lt; ActiveRecord::Base enum gender: %i(male &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://yamayo.github.io">
+  <link rel="canonical" href="http://yamayo.github.io/blog/2014/05/08/rails-4-1-enum-and-validations">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="northaven" type="application/atom+xml">
@@ -82,15 +82,12 @@ class User &lt; ActiveRecord::Base enum gender: %i(male &hellip;">
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/05/08/rails-4-1-enum-and-validations/">Rails 4.1 の enum と validation</a></h1>
+      <h1 class="entry-title">Rails 4.1 の enum と validation</h1>
     
     
       <p class="meta">
@@ -113,7 +110,7 @@ class User &lt; ActiveRecord::Base enum gender: %i(male &hellip;">
   </header>
 
 
-  <div class="entry-content"><p>Rails 4.1 から導入されている Active Record enums の値を validates の inclusion に指定した場合、</p>
+<div class="entry-content"><p>Rails 4.1 から導入されている Active Record enums の値を validates の inclusion に指定した場合、</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -171,92 +168,16 @@ class User &lt; ActiveRecord::Base enum gender: %i(male &hellip;">
 
 <p>出来れば validation とセットで使いたいと思う今日この頃でした。。</p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/23/amazon-linux-nginx-provisioning-chef/">Amazon Linux 上に chef と Vagrant を使って nginx の最新バージョンをプロビジョニングする</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">yamayo</span></span>
 
-<time datetime="2014-02-23T08:30:31+09:00" pubdate data-updated="true">2014/02/23</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Amazon Linux 上で yum パッケージから nginx の最新バージョンをインストールするには、 /etc/yum.repos.d/nginx.repo に以下を追加する必要があります。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[nginx]
-</span><span class='line'>name=nginx repo
-</span><span class='line'>baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
-</span><span class='line'>gpgcheck=0
-</span><span class='line'>enabled=1</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これを chef のレシピでやる必要があるのですが、以下のように書きました。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">yum_repository</span> <span class="s1">&#39;nginx&#39;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">description</span> <span class="s1">&#39;Nginx.org Repository&#39;</span>
-</span><span class='line'>  <span class="n">baseurl</span>     <span class="s1">&#39;http://nginx.org/packages/centos/6/$basearch/&#39;</span>
-</span><span class='line'>  <span class="n">gpgcheck</span>    <span class="kp">false</span>
-</span><span class='line'>  <span class="n">priority</span>    <span class="s1">&#39;1&#39;</span>
-</span><span class='line'>  <span class="n">action</span> <span class="ss">:create</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>以下にサンプルをアップしています。<br>
-<a href="https://github.com/yamayo/chef-repo">https://github.com/yamayo/chef-repo</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/12/16/aws-sdk-for-ruby-to-gzip/">AWS SDK for Ruby を使ってコンテンツを S3 に gzip 圧縮して保存する</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -268,90 +189,49 @@ class User &lt; ActiveRecord::Base enum gender: %i(male &hellip;">
   
 
 
-<time datetime="2013-12-16T03:01:55+09:00" pubdate data-updated="true">2013/12/16</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>S3 で gzip コンテンツに対応させる方法は、オブジェクトの Metadata に対して、Content-Encoding を指定できるのでこれを使います。
-<img src="/images/posts/2014-12-16/s3-metadata.png" alt="s3-metadata" /></p>
-
-<p>AWS SDK for Ruby を使って、gzip コンテンツを upload/download するサンプルを Gist に上げました。<br>
-<a href="https://gist.github.com/yamayo/7981897" target="_blank">AWS S3 upload/download with gzip</a></p>
-
-<div><script src='https://gist.github.com/7981897.js'></script>
-<noscript><pre><code># A sample Gemfile
-source &#39;https://rubygems.org&#39;
-
-gem &#39;aws-sdk&#39;
-gem &#39;pit&#39;</code></pre></noscript></div>
-
-
-<p>ちなみに、Google Developers によるとオーバーヘッドが発生するため、圧縮するファイルサイズの最小範囲は 150 〜 1000 バイトが推奨されています。<br></p>
-
-<p><a href="https://developers.google.com/speed/docs/best-practices/payload?hl=ja#GzipCompression" target="_blank"><a href="https://developers.google.com/speed/docs/best-practices/payload?hl=ja#GzipCompression">https://developers.google.com/speed/docs/best-practices/payload?hl=ja#GzipCompression</a></a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
+<time datetime="2014-05-08T00:23:41+09:00" pubdate data-updated="true">2014/05/08</time>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/12/01/git-rebase-onto/">git rebase &#8211;onto で派生元ブランチの変更</a></h1>
-    
-    
-      <p class="meta">
-        
 
-
-
-
-
-
-
-
+<span class="categories">
   
+    <a class='category' href='/blog/categories/rails/'>Rails</a>
+  
+</span>
 
 
-<time datetime="2013-12-01T16:53:13+09:00" pubdate data-updated="true">2013/12/01</time>
-        
-      </p>
+    </p>
     
-  </header>
+      <div class="sharing">
+  <a href="http://b.hatena.ne.jp/entry/http://yamayo.github.io/blog/2014/05/08/rails-4-1-enum-and-validations/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://yamayo.github.io/blog/2014/05/08/rails-4-1-enum-and-validations/" data-via="" data-counturl="http://yamayo.github.io/blog/2014/05/08/rails-4-1-enum-and-validations/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/02/23/amazon-linux-nginx-provisioning-chef/" title="Previous Post: Amazon Linux 上に chef と Vagrant を使って nginx の最新バージョンをプロビジョニングする">&laquo; Amazon Linux 上に chef と Vagrant を使って nginx の最新バージョンをプロビジョニングする</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-  <div class="entry-content"><p>本来 master ブランチから派生させるべきだった topic ブランチを、間違って develop ブランチから派生させてしまった場合、rebase &mdash;onto を使って、派生元を master ブランチに変更できる。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ git rebase --onto master develop topic</span></code></pre></td></tr></table></div></figure>
 
 </div>
-  
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
-    Include file &#8216;custom/asides/about.html asides/recent_posts.html&#8217; contains invalid characters or sequencesIncluded file &#8216;custom/asides/about.html asides/recent_posts.html&#8217; not found in _includes directory
+    Include file 'custom/asides/about.html asides/recent_posts.html' contains invalid characters or sequencesIncluded file 'custom/asides/about.html asides/recent_posts.html' not found in _includes directory
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/yamayo">@yamayo</a> on GitHub
@@ -383,6 +263,7 @@ gem &#39;pit&#39;</code></pre></noscript></div>
 
   
 </aside>
+
 
     </div>
   </div>

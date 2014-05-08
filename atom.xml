@@ -4,7 +4,7 @@
   <title><![CDATA[northaven]]></title>
   <link href="http://yamayo.github.io/atom.xml" rel="self"/>
   <link href="http://yamayo.github.io/"/>
-  <updated>2014-05-09T02:28:46+09:00</updated>
+  <updated>2014-05-09T02:32:37+09:00</updated>
   <id>http://yamayo.github.io/</id>
   <author>
     <name><![CDATA[yamayo]]></name>
@@ -12,6 +12,71 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails 4.1 の enum と validation]]></title>
+    <link href="http://yamayo.github.io/blog/2014/05/08/rails-4-1-enum-and-validations/"/>
+    <updated>2014-05-08T00:23:41+09:00</updated>
+    <id>http://yamayo.github.io/blog/2014/05/08/rails-4-1-enum-and-validations</id>
+    <content type="html"><![CDATA[<p>Rails 4.1 から導入されている Active Record enums の値を validates の inclusion に指定した場合、</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">enum</span> <span class="ss">gender</span><span class="p">:</span> <span class="o">%</span><span class="n">i</span><span class="p">(</span><span class="n">male</span> <span class="n">female</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">validates</span> <span class="ss">:gender</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">presence</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">inclusion</span><span class="p">:</span> <span class="p">{</span> <span class="k">in</span><span class="p">:</span> <span class="nb">proc</span> <span class="p">{</span> <span class="n">genders</span><span class="o">.</span><span class="n">keys</span> <span class="p">}</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以下のように validation が正常に起動して errors に入ることを期待したんですが、</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>bundle <span class="nb">exec </span>rails c
+</span><span class='line'>&gt; <span class="nv">user</span> <span class="o">=</span> User.new<span class="o">(</span>gender: 2<span class="o">)</span>
+</span><span class='line'>&gt; user.valid?
+</span><span class='line'><span class="o">=</span>&gt; <span class="nb">false</span>
+</span><span class='line'>&gt; user.errors.messages
+</span><span class='line'><span class="o">=</span>&gt; <span class="o">{</span>:gender<span class="o">=</span>&gt;<span class="o">[</span><span class="s2">&quot;is not included in the list&quot;</span><span class="o">]}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>インスタンス生成時点で、ArgumentError が発生してしまったのでした。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&gt; <span class="nv">user</span> <span class="o">=</span> User.new<span class="o">(</span>gender: 2<span class="o">)</span>
+</span><span class='line'>ArgumentError: <span class="s1">&#39;2&#39;</span> is not a valid gender
+</span></code></pre></td></tr></table></div></figure>
+
+
+<br/>
+
+
+<p>ここにあるように、パフォーマンス上の理由から現在はユーザの入力エラーではなく、アプリケーションエラーと見なされてしまうとのこと。<br/>
+<a href="https://github.com/rails/rails/issues/13971" target="_blank"><a href="https://github.com/rails/rails/issues/13971">https://github.com/rails/rails/issues/13971</a></a></p>
+
+<br/>
+
+
+<p>出来れば validation とセットで使いたいと思う今日この頃でした。。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Amazon Linux 上に chef と Vagrant を使って nginx の最新バージョンをプロビジョニングする]]></title>

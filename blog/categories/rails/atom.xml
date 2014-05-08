@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Rails | northaven]]></title>
+  <link href="http://yamayo.github.io/blog/categories/rails/atom.xml" rel="self"/>
+  <link href="http://yamayo.github.io/"/>
+  <updated>2014-05-09T02:32:37+09:00</updated>
+  <id>http://yamayo.github.io/</id>
+  <author>
+    <name><![CDATA[yamayo]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Rails 4.1 の enum と validation]]></title>
+    <link href="http://yamayo.github.io/blog/2014/05/08/rails-4-1-enum-and-validations/"/>
+    <updated>2014-05-08T00:23:41+09:00</updated>
+    <id>http://yamayo.github.io/blog/2014/05/08/rails-4-1-enum-and-validations</id>
+    <content type="html"><![CDATA[<p>Rails 4.1 から導入されている Active Record enums の値を validates の inclusion に指定した場合、</p>
+
+<p>``` ruby
+class User &lt; ActiveRecord::Base
+  enum gender: %i(male female)</p>
+
+<p>  validates :gender,</p>
+
+<pre><code>presence: true,
+inclusion: { in: proc { genders.keys } }
+</code></pre>
+
+<p>end
+```</p>
+
+<p>以下のように validation が正常に起動して errors に入ることを期待したんですが、
+``` sh
+$ bundle exec rails c</p>
+
+<blockquote><p>user = User.new(gender: 2)
+user.valid?
+=> false
+user.errors.messages
+=> {:gender=>[&ldquo;is not included in the list&rdquo;]}
+```</p></blockquote>
+
+<p>インスタンス生成時点で、ArgumentError が発生してしまったのでした。
+``` sh</p>
+
+<blockquote><p>user = User.new(gender: 2)
+ArgumentError: &lsquo;2&rsquo; is not a valid gender
+```</p></blockquote>
+
+<br/>
+
+
+<p>ここにあるように、パフォーマンス上の理由から現在はユーザの入力エラーではなく、アプリケーションエラーと見なされてしまうとのこと。<br/>
+<a href="https://github.com/rails/rails/issues/13971" target="_blank"><a href="https://github.com/rails/rails/issues/13971">https://github.com/rails/rails/issues/13971</a></a></p>
+
+<br/>
+
+
+<p>出来れば validation とセットで使いたいと思う今日この頃でした。。</p>
+]]></content>
+  </entry>
+  
+</feed>
