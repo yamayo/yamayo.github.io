@@ -5,19 +5,17 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Rails 4.1 の enum と validation - northaven</title>
+  <title>Vim の正規表現で Ruby の Hash のキーと値の間にスペースを追加する - northaven</title>
   <meta name="author" content="yamayo">
 
   
-  <meta name="description" content="Rails 4.1 から導入されている Active Record enums の値を validates の inclusion に指定した場合、 1
+  <meta name="description" content="会社で spec ファイルのリファクタリングをしてるんだけど、以下のようなコードが多くて困っていたのです。 1
 2
 3
 4
 5
-6
-7
-8
-class User &lt; ActiveRecord::Base enum gender: %i(male &hellip;">
+class Api::UserController ... h = { foo:&#39;aaa&#39;, bar:&#39;bbb&#39; } ...
+end &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -26,7 +24,7 @@ class User &lt; ActiveRecord::Base enum gender: %i(male &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://yamayo.github.io/blog/2014/05/08/rails-4-1-enum-and-validations">
+  <link rel="canonical" href="http://yamayo.github.io/blog/2014/05/23/vim-regexp-ruby-hash">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="northaven" type="application/atom+xml">
@@ -87,7 +85,7 @@ class User &lt; ActiveRecord::Base enum gender: %i(male &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Rails 4.1 の enum と validation</h1>
+      <h1 class="entry-title">Vim の正規表現で Ruby の Hash のキーと値の間にスペースを追加する</h1>
     
     
       <p class="meta">
@@ -103,70 +101,39 @@ class User &lt; ActiveRecord::Base enum gender: %i(male &hellip;">
   
 
 
-<time datetime="2014-05-08T00:23:41+09:00" pubdate data-updated="true">2014/05/08</time>
+<time datetime="2014-05-23T21:28:29+09:00" pubdate data-updated="true">2014/05/23</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Rails 4.1 から導入されている Active Record enums の値を validates の inclusion に指定した場合、</p>
+<div class="entry-content"><p>会社で spec ファイルのリファクタリングをしてるんだけど、以下のようなコードが多くて困っていたのです。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
-</span><span class='line'>  <span class="n">enum</span> <span class="ss">gender</span><span class="p">:</span> <span class="o">%</span><span class="n">i</span><span class="p">(</span><span class="n">male</span> <span class="n">female</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">validates</span> <span class="ss">:gender</span><span class="p">,</span>
-</span><span class='line'>    <span class="ss">presence</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
-</span><span class='line'>    <span class="ss">inclusion</span><span class="p">:</span> <span class="p">{</span> <span class="k">in</span><span class="p">:</span> <span class="nb">proc</span> <span class="p">{</span> <span class="n">genders</span><span class="o">.</span><span class="n">keys</span> <span class="p">}</span> <span class="p">}</span>
-</span><span class='line'>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Api</span><span class="o">::</span><span class="no">UserController</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>  <span class="n">h</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">foo</span><span class="p">:</span><span class="s1">&#39;aaa&#39;</span><span class="p">,</span> <span class="ss">bar</span><span class="p">:</span><span class="s1">&#39;bbb&#39;</span> <span class="p">}</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>以下のように validation が正常に起動して errors に入ることを期待したんですが、</p>
+<p>キーと値の間にスペースがないんですよ。<br/>
+細かいけど、こうゆうの気になっちゃうんです&hellip;</p>
+
+<p>正規表現が苦手なボクが置換してみた。（Vim です）</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>bundle <span class="nb">exec </span>rails c
-</span><span class='line'>&gt; <span class="nv">user</span> <span class="o">=</span> User.new<span class="o">(</span>gender: 2<span class="o">)</span>
-</span><span class='line'>&gt; user.valid?
-</span><span class='line'><span class="o">=</span>&gt; <span class="nb">false</span>
-</span><span class='line'>&gt; user.errors.messages
-</span><span class='line'><span class="o">=</span>&gt; <span class="o">{</span>:gender<span class="o">=</span>&gt;<span class="o">[</span><span class="s2">&quot;is not included in the list&quot;</span><span class="o">]}</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%s/\([A-Za-z0-9]\):\([A-Za-z&quot;&#39;0-9]\)/</span><span class="p">\</span><span class="mi">1</span><span class="p">:</span> <span class="p">\</span><span class="mi">2</span><span class="o">/</span><span class="n">gc</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>インスタンス生成時点で、ArgumentError が発生してしまったのでした。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>&gt; <span class="nv">user</span> <span class="o">=</span> User.new<span class="o">(</span>gender: 2<span class="o">)</span>
-</span><span class='line'>ArgumentError: <span class="s1">&#39;2&#39;</span> is not a valid gender
-</span></code></pre></td></tr></table></div></figure>
-
-
-<br/>
-
-
-<p>ここにあるように、パフォーマンス上の理由から現在はユーザの入力エラーではなく、アプリケーションエラーと見なされてしまうとのこと。<br/>
-<a href="https://github.com/rails/rails/issues/13971" target="_blank"><a href="https://github.com/rails/rails/issues/13971">https://github.com/rails/rails/issues/13971</a></a></p>
-
-<br/>
-
-
-<p>出来れば validation とセットで使いたいと思う今日この頃でした。。</p>
+<p>もっと簡単にできそうだなぁ。。</p>
 </div>
 
 
@@ -189,12 +156,12 @@ class User &lt; ActiveRecord::Base enum gender: %i(male &hellip;">
   
 
 
-<time datetime="2014-05-08T00:23:41+09:00" pubdate data-updated="true">2014/05/08</time>
+<time datetime="2014-05-23T21:28:29+09:00" pubdate data-updated="true">2014/05/23</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/rails/'>Rails</a>
+    <a class='category' href='/blog/categories/vim/'>Vim</a>
   
 </span>
 
@@ -202,9 +169,9 @@ class User &lt; ActiveRecord::Base enum gender: %i(male &hellip;">
     </p>
     
       <div class="sharing">
-  <a href="http://b.hatena.ne.jp/entry/http://yamayo.github.io/blog/2014/05/08/rails-4-1-enum-and-validations/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+  <a href="http://b.hatena.ne.jp/entry/http://yamayo.github.io/blog/2014/05/23/vim-regexp-ruby-hash/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://yamayo.github.io/blog/2014/05/08/rails-4-1-enum-and-validations/" data-via="" data-counturl="http://yamayo.github.io/blog/2014/05/08/rails-4-1-enum-and-validations/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://yamayo.github.io/blog/2014/05/23/vim-regexp-ruby-hash/" data-via="" data-counturl="http://yamayo.github.io/blog/2014/05/23/vim-regexp-ruby-hash/" >Tweet</a>
   
   
   
@@ -215,10 +182,8 @@ class User &lt; ActiveRecord::Base enum gender: %i(male &hellip;">
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/02/23/amazon-linux-nginx-provisioning-chef/" title="Previous Post: Amazon Linux 上に chef と Vagrant を使って nginx の最新バージョンをプロビジョニングする">&laquo; Amazon Linux 上に chef と Vagrant を使って nginx の最新バージョンをプロビジョニングする</a>
+        <a class="basic-alignment left" href="/blog/2014/05/08/rails-4-1-enum-and-validations/" title="Previous Post: Rails 4.1 の enum と validation">&laquo; Rails 4.1 の enum と validation</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/05/23/vim-regexp-ruby-hash/" title="Next Post: Vim の正規表現で Ruby の Hash のキーと値の間にスペースを追加する">Vim の正規表現で Ruby の Hash のキーと値の間にスペースを追加する &raquo;</a>
       
     </p>
   </footer>

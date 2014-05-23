@@ -9,15 +9,13 @@
   <meta name="author" content="yamayo">
 
   
-  <meta name="description" content="Rails 4.1 から導入されている Active Record enums の値を validates の inclusion に指定した場合、 1
+  <meta name="description" content="会社で spec ファイルのリファクタリングをしてるんだけど、以下のようなコードが多くて困っていたのです。 1
 2
 3
 4
 5
-6
-7
-8
-class User &lt; ActiveRecord::Base enum gender: %i(male &hellip;">
+class Api::UserController ... h = { foo:&#39;aaa&#39;, bar:&#39;bbb&#39; } ...
+end &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -84,6 +82,67 @@ class User &lt; ActiveRecord::Base enum gender: %i(male &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/23/vim-regexp-ruby-hash/">Vim の正規表現で Ruby の Hash のキーと値の間にスペースを追加する</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-23T21:28:29+09:00" pubdate data-updated="true">2014/05/23</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>会社で spec ファイルのリファクタリングをしてるんだけど、以下のようなコードが多くて困っていたのです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Api</span><span class="o">::</span><span class="no">UserController</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>  <span class="n">h</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">foo</span><span class="p">:</span><span class="s1">&#39;aaa&#39;</span><span class="p">,</span> <span class="ss">bar</span><span class="p">:</span><span class="s1">&#39;bbb&#39;</span> <span class="p">}</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>キーと値の間にスペースがないんですよ。<br/>
+細かいけど、こうゆうの気になっちゃうんです&hellip;</p>
+
+<p>正規表現が苦手なボクが置換してみた。（Vim です）</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%s/\([A-Za-z0-9]\):\([A-Za-z&quot;&#39;0-9]\)/</span><span class="p">\</span><span class="mi">1</span><span class="p">:</span> <span class="p">\</span><span class="mi">2</span><span class="o">/</span><span class="n">gc</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>もっと簡単にできそうだなぁ。。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>

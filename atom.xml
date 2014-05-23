@@ -4,7 +4,7 @@
   <title><![CDATA[northaven]]></title>
   <link href="http://yamayo.github.io/atom.xml" rel="self"/>
   <link href="http://yamayo.github.io/"/>
-  <updated>2014-05-09T02:32:37+09:00</updated>
+  <updated>2014-05-24T00:49:00+09:00</updated>
   <id>http://yamayo.github.io/</id>
   <author>
     <name><![CDATA[yamayo]]></name>
@@ -12,6 +12,40 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Vim の正規表現で Ruby の Hash のキーと値の間にスペースを追加する]]></title>
+    <link href="http://yamayo.github.io/blog/2014/05/23/vim-regexp-ruby-hash/"/>
+    <updated>2014-05-23T21:28:29+09:00</updated>
+    <id>http://yamayo.github.io/blog/2014/05/23/vim-regexp-ruby-hash</id>
+    <content type="html"><![CDATA[<p>会社で spec ファイルのリファクタリングをしてるんだけど、以下のようなコードが多くて困っていたのです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Api</span><span class="o">::</span><span class="no">UserController</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>  <span class="n">h</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">foo</span><span class="p">:</span><span class="s1">&#39;aaa&#39;</span><span class="p">,</span> <span class="ss">bar</span><span class="p">:</span><span class="s1">&#39;bbb&#39;</span> <span class="p">}</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>キーと値の間にスペースがないんですよ。<br/>
+細かいけど、こうゆうの気になっちゃうんです&hellip;</p>
+
+<p>正規表現が苦手なボクが置換してみた。（Vim です）</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%s/\([A-Za-z0-9]\):\([A-Za-z&quot;&#39;0-9]\)/</span><span class="p">\</span><span class="mi">1</span><span class="p">:</span> <span class="p">\</span><span class="mi">2</span><span class="o">/</span><span class="n">gc</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>もっと簡単にできそうだなぁ。。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails 4.1 の enum と validation]]></title>

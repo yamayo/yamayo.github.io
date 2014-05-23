@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Vim | northaven]]></title>
+  <link href="http://yamayo.github.io/blog/categories/vim/atom.xml" rel="self"/>
+  <link href="http://yamayo.github.io/"/>
+  <updated>2014-05-24T00:49:00+09:00</updated>
+  <id>http://yamayo.github.io/</id>
+  <author>
+    <name><![CDATA[yamayo]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Vim の正規表現で Ruby の Hash のキーと値の間にスペースを追加する]]></title>
+    <link href="http://yamayo.github.io/blog/2014/05/23/vim-regexp-ruby-hash/"/>
+    <updated>2014-05-23T21:28:29+09:00</updated>
+    <id>http://yamayo.github.io/blog/2014/05/23/vim-regexp-ruby-hash</id>
+    <content type="html"><![CDATA[<p>会社で spec ファイルのリファクタリングをしてるんだけど、以下のようなコードが多くて困っていたのです。</p>
+
+<p><code>ruby
+class Api::UserController
+  ...
+  h = { foo:'aaa', bar:'bbb' }
+  ...
+end
+</code>
+キーと値の間にスペースがないんですよ。<br/>
+細かいけど、こうゆうの気になっちゃうんです&hellip;</p>
+
+<p>正規表現が苦手なボクが置換してみた。（Vim です）
+<code>ruby
+%s/\([A-Za-z0-9]\):\([A-Za-z"'0-9]\)/\1: \2/gc
+</code>
+もっと簡単にできそうだなぁ。。</p>
+]]></content>
+  </entry>
+  
+</feed>
