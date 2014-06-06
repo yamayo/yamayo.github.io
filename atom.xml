@@ -4,7 +4,7 @@
   <title><![CDATA[northaven]]></title>
   <link href="http://yamayo.github.io/atom.xml" rel="self"/>
   <link href="http://yamayo.github.io/"/>
-  <updated>2014-05-24T00:49:00+09:00</updated>
+  <updated>2014-06-07T00:02:43+09:00</updated>
   <id>http://yamayo.github.io/</id>
   <author>
     <name><![CDATA[yamayo]]></name>
@@ -12,6 +12,99 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rake で before task をフックする]]></title>
+    <link href="http://yamayo.github.io/blog/2014/06/06/rake-before-task-hook/"/>
+    <updated>2014-06-06T22:50:27+09:00</updated>
+    <id>http://yamayo.github.io/blog/2014/06/06/rake-before-task-hook</id>
+    <content type="html"><![CDATA[<p>Rake タスクの前後に実行するタスクを登録する方法を調べていました。<br/>
+<a href="https://github.com/guillermo/rake-hooks">https://github.com/guillermo/rake-hooks</a> というのもあるようですが、Build Status が&hellip;<br/>
+結果的には、以下のようにとてもシンプルな形で実現出来ました。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">task</span> <span class="ss">main</span><span class="p">:</span> <span class="ss">:environment</span> <span class="k">do</span>
+</span><span class='line'>  <span class="nb">p</span> <span class="ss">:foo</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">task</span> <span class="ss">before</span><span class="p">:</span> <span class="ss">:environment</span> <span class="k">do</span>
+</span><span class='line'>  <span class="nb">p</span> <span class="ss">:before</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">task</span> <span class="ss">main</span><span class="p">:</span> <span class="ss">:before</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>そもそも何故やりたかったのかと言うと、sidekiq を system を使って実行しようとした時に、<br/>
+RAILS_ENV を before タスクで共通的に設定するようにしたかったのでした。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">namespace</span> <span class="ss">:sidekiq</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">desc</span> <span class="s2">&quot;Start sidekiq&quot;</span>
+</span><span class='line'>  <span class="n">task</span> <span class="ss">start</span><span class="p">:</span> <span class="ss">:environment</span> <span class="k">do</span>
+</span><span class='line'>    <span class="nb">system</span><span class="p">(</span><span class="s2">&quot;bundle exec sidekiq -C </span><span class="si">#{</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;sidekiq.yml&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">task</span> <span class="ss">:sidekiqctl</span><span class="p">,</span> <span class="o">[</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">:deadline_timeout</span><span class="o">]</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="p">,</span> <span class="n">args</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">system</span><span class="p">(</span><span class="s2">&quot;bundle exec sidekiqctl </span><span class="si">#{</span><span class="n">args</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;tmp&#39;</span><span class="p">,</span> <span class="s1">&#39;pids&#39;</span><span class="p">,</span> <span class="s1">&#39;sidekiq.pid&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">args</span><span class="o">[</span><span class="ss">:deadline_timeout</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">desc</span> <span class="s2">&quot;Quiet sends USR1 to sidekiq&quot;</span>
+</span><span class='line'>  <span class="n">task</span> <span class="ss">quiet</span><span class="p">:</span> <span class="ss">:environment</span> <span class="k">do</span>
+</span><span class='line'>    <span class="ss">Rake</span><span class="p">:</span><span class="ss">:Task</span><span class="o">[</span><span class="s1">&#39;sidekiq:sidekiqctl&#39;</span><span class="o">].</span><span class="n">invoke</span><span class="p">(</span><span class="s1">&#39;quiet&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">desc</span> <span class="s2">&quot;Stop sends TERM to sidekiq&quot;</span>
+</span><span class='line'>  <span class="n">task</span> <span class="ss">stop</span><span class="p">:</span> <span class="ss">:environment</span> <span class="k">do</span>
+</span><span class='line'>    <span class="ss">Rake</span><span class="p">:</span><span class="ss">:Task</span><span class="o">[</span><span class="s1">&#39;sidekiq:sidekiqctl&#39;</span><span class="o">].</span><span class="n">invoke</span><span class="p">(</span><span class="s1">&#39;stop&#39;</span><span class="p">,</span> <span class="s1">&#39;10&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">task</span> <span class="ss">before</span><span class="p">:</span> <span class="ss">:environment</span> <span class="k">do</span>
+</span><span class='line'>    <span class="no">RAILS_ENV</span> <span class="o">=</span> <span class="p">(</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;RAILS_ENV&#39;</span><span class="o">]</span> <span class="o">||</span> <span class="s1">&#39;development&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dup</span> <span class="k">unless</span> <span class="n">defined?</span><span class="p">(</span><span class="no">RAILS_ENV</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">task</span> <span class="ss">start</span><span class="p">:</span> <span class="ss">:before</span>
+</span><span class='line'>  <span class="n">task</span> <span class="ss">sidekiqctl</span><span class="p">:</span> <span class="ss">:before</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上記のようにすることで、通常の rake タスクと同様に RAILS_ENV を設定することができました。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ RAILS_ENV</span><span class="o">=</span>production bundle <span class="nb">exec </span>rake sidekiq:start
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Vim の正規表現で Ruby の Hash のキーと値の間にスペースを追加する]]></title>

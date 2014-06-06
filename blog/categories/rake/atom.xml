@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: rake | northaven]]></title>
+  <link href="http://yamayo.github.io/blog/categories/rake/atom.xml" rel="self"/>
+  <link href="http://yamayo.github.io/"/>
+  <updated>2014-06-07T00:02:43+09:00</updated>
+  <id>http://yamayo.github.io/</id>
+  <author>
+    <name><![CDATA[yamayo]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Rake で before task をフックする]]></title>
+    <link href="http://yamayo.github.io/blog/2014/06/06/rake-before-task-hook/"/>
+    <updated>2014-06-06T22:50:27+09:00</updated>
+    <id>http://yamayo.github.io/blog/2014/06/06/rake-before-task-hook</id>
+    <content type="html"><![CDATA[<p>Rake タスクの前後に実行するタスクを登録する方法を調べていました。<br/>
+<a href="https://github.com/guillermo/rake-hooks">https://github.com/guillermo/rake-hooks</a> というのもあるようですが、Build Status が&hellip;<br/>
+結果的には、以下のようにとてもシンプルな形で実現出来ました。</p>
+
+<p><code>ruby
+task main: :environment do
+  p :foo
+end
+task before: :environment do
+  p :before
+end
+task main: :before
+</code></p>
+
+<p>そもそも何故やりたかったのかと言うと、sidekiq を system を使って実行しようとした時に、<br/>
+RAILS_ENV を before タスクで共通的に設定するようにしたかったのでした。</p>
+
+<p>``` ruby
+namespace :sidekiq do
+  desc &ldquo;Start sidekiq&rdquo;
+  task start: :environment do</p>
+
+<pre><code>system("bundle exec sidekiq -C #{Rails.root.join('config', 'sidekiq.yml')}")
+</code></pre>
+
+<p>  end</p>
+
+<p>  task :sidekiqctl, [:name, :deadline_timeout] => :environment do |t, args|</p>
+
+<pre><code>system("bundle exec sidekiqctl #{args[:name]} #{Rails.root.join('tmp', 'pids', 'sidekiq.pid')} #{args[:deadline_timeout]}")
+</code></pre>
+
+<p>  end</p>
+
+<p>  desc &ldquo;Quiet sends USR1 to sidekiq&rdquo;
+  task quiet: :environment do</p>
+
+<pre><code>Rake::Task['sidekiq:sidekiqctl'].invoke('quiet')
+</code></pre>
+
+<p>  end</p>
+
+<p>  desc &ldquo;Stop sends TERM to sidekiq&rdquo;
+  task stop: :environment do</p>
+
+<pre><code>Rake::Task['sidekiq:sidekiqctl'].invoke('stop', '10')
+</code></pre>
+
+<p>  end</p>
+
+<p>  task before: :environment do</p>
+
+<pre><code>RAILS_ENV = (ENV['RAILS_ENV'] || 'development').dup unless defined?(RAILS_ENV)
+</code></pre>
+
+<p>  end
+  task start: :before
+  task sidekiqctl: :before
+end
+```</p>
+
+<p>上記のようにすることで、通常の rake タスクと同様に RAILS_ENV を設定することができました。
+<code>sh
+$ RAILS_ENV=production bundle exec rake sidekiq:start
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>
