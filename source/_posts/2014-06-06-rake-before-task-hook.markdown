@@ -58,3 +58,5 @@ end
 ``` sh
 $ RAILS_ENV=production bundle exec rake sidekiq:start
 ```
+
+追記: capistrano では使いまくってますね！
