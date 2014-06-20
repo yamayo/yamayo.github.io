@@ -9,11 +9,21 @@
   <meta name="author" content="yamayo">
 
   
-  <meta name="description" content="Rake タスクの前後に実行するタスクを登録する方法を調べていました。
-https://github.com/guillermo/rake-hooks というのもあるようですが、Build Status が&hellip;
-結果的には、以下のようにとてもシンプルな形で実現出来ました。 1
+  <meta name="description" content="RSpec の shared_examples は便利ですが、複数の example でちょっとだけ内容を変更したい場合があります。
+そんなときは shard_examples にブロック引数が渡せるので、それを使って変更できます。 1
 2
-3 &hellip;">
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +90,80 @@ https://github.com/guillermo/rake-hooks というのもあるようですが、B
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/20/rspec-shared-examples-block-argument/">RSpec の shared_examples にブロック引数を渡す</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-20T23:16:05+09:00" pubdate data-updated="true">2014/06/20</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>RSpec の shared_examples は便利ですが、複数の example でちょっとだけ内容を変更したい場合があります。
+そんなときは shard_examples にブロック引数が渡せるので、それを使って変更できます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">shared_examples</span> <span class="s1">&#39;Series of processes&#39;</span> <span class="k">do</span> <span class="o">|</span><span class="n">type</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">it</span> <span class="p">{</span> <span class="n">expect</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:send_messages</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">it</span> <span class="p">{</span> <span class="n">expect</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:receive_message</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;foo&#39;</span>
+</span><span class='line'>    <span class="n">it</span> <span class="p">{</span> <span class="n">expect</span><span class="p">(</span><span class="no">User</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:login</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="n">it</span> <span class="p">{</span> <span class="n">expect</span><span class="p">(</span><span class="no">User</span><span class="p">)</span><span class="o">.</span><span class="n">to_not</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:login</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">context</span> <span class="s1">&#39;foo&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it_behaves_like</span> <span class="s1">&#39;Series of processes&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">context</span> <span class="s1">&#39;bar&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it_behaves_like</span> <span class="s1">&#39;Series of processes&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -194,6 +278,8 @@ RAILS_ENV を before タスクで共通的に設定するようにしたかっ�
 </pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ RAILS_ENV</span><span class="o">=</span>production bundle <span class="nb">exec </span>rake sidekiq:start
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p>追記: capistrano では使いまくってますね！</p>
 </div>
   
   

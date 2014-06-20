@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: RSpec | northaven]]></title>
+  <link href="http://yamayo.github.io/blog/categories/rspec/atom.xml" rel="self"/>
+  <link href="http://yamayo.github.io/"/>
+  <updated>2014-06-20T23:36:09+09:00</updated>
+  <id>http://yamayo.github.io/</id>
+  <author>
+    <name><![CDATA[yamayo]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[RSpec の shared_examples にブロック引数を渡す]]></title>
+    <link href="http://yamayo.github.io/blog/2014/06/20/rspec-shared-examples-block-argument/"/>
+    <updated>2014-06-20T23:16:05+09:00</updated>
+    <id>http://yamayo.github.io/blog/2014/06/20/rspec-shared-examples-block-argument</id>
+    <content type="html"><![CDATA[<p>RSpec の shared_examples は便利ですが、複数の example でちょっとだけ内容を変更したい場合があります。
+そんなときは shard_examples にブロック引数が渡せるので、それを使って変更できます。</p>
+
+<p>```rb
+shared_examples &lsquo;Series of processes&rsquo; do |type|
+  it { expect(collection).to receive(:send_messages) }
+  it { expect(collection).to receive(:receive_message) }
+  if type == &lsquo;foo&rsquo;</p>
+
+<pre><code>it { expect(User).to receive(:login) }
+</code></pre>
+
+<p>  else</p>
+
+<pre><code>it { expect(User).to_not receive(:login) }
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>context &lsquo;foo&rsquo; do
+  it_behaves_like &lsquo;Series of processes&rsquo;, &lsquo;foo&rsquo;
+end</p>
+
+<p>context &lsquo;bar&rsquo; do
+  it_behaves_like &lsquo;Series of processes&rsquo;, &lsquo;bar&rsquo;
+end
+```</p>
+]]></content>
+  </entry>
+  
+</feed>
