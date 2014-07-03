@@ -4,7 +4,7 @@
   <title><![CDATA[northaven]]></title>
   <link href="http://yamayo.github.io/atom.xml" rel="self"/>
   <link href="http://yamayo.github.io/"/>
-  <updated>2014-07-03T23:13:06+09:00</updated>
+  <updated>2014-07-03T23:54:20+09:00</updated>
   <id>http://yamayo.github.io/</id>
   <author>
     <name><![CDATA[yamayo]]></name>
@@ -12,6 +12,65 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[sidekiq で logrotate を使うときは USR2 シグナルを送る]]></title>
+    <link href="http://yamayo.github.io/blog/2014/07/03/sidekiq-logrotate-usr2/"/>
+    <updated>2014-07-03T11:45:57+09:00</updated>
+    <id>http://yamayo.github.io/blog/2014/07/03/sidekiq-logrotate-usr2</id>
+    <content type="html"><![CDATA[<p>Unicorn に USR1 のシグナルを送ることでログファイルを reopen 出来ることは知っていたのですが、<br/>
+Sidekiq だと下記にあるように USR2 なんですね。<br/>
+<a href="http://github.com/mperham/sidekiq/wiki/Signals">http://github.com/mperham/sidekiq/wiki/Signals</a></p>
+
+<p>以下は同プロジェクトに Unicorn と Sidekiq がある場合の、logrotate の書き方の例です。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/data/my_rails_app/shared/log/*.log {
+</span><span class='line'>  create 0644 yamayo yamayo
+</span><span class='line'>  daily
+</span><span class='line'>  missingok
+</span><span class='line'>  rotate 10
+</span><span class='line'>  size 10M
+</span><span class='line'>  dateext
+</span><span class='line'>  notifempty
+</span><span class='line'>  copytruncate
+</span><span class='line'>
+</span><span class='line'>  compress
+</span><span class='line'>  delaycompress
+</span><span class='line'>
+</span><span class='line'>  lastaction
+</span><span class='line'>    unicorn_pid=/data/my_rails_app/shared/tmp/pids/unicorn.pid
+</span><span class='line'>    test -s $pid && kill -USR1 "$(cat $unicorn_pid)"
+</span><span class='line'>
+</span><span class='line'>    sidekiq_pid=/data/my_rails_app/shared/tmp/pids/sidekiq.pid
+</span><span class='line'>    test -s $pid && kill -USR2 "$(cat $sidekiq_pid)"
+</span><span class='line'>  endscript
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[RSpec の shared_examples にブロック引数を渡す]]></title>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Sidekiq | northaven]]></title>
+  <link href="http://yamayo.github.io/blog/categories/sidekiq/atom.xml" rel="self"/>
+  <link href="http://yamayo.github.io/"/>
+  <updated>2014-07-03T23:54:20+09:00</updated>
+  <id>http://yamayo.github.io/</id>
+  <author>
+    <name><![CDATA[yamayo]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[sidekiq で logrotate を使うときは USR2 シグナルを送る]]></title>
+    <link href="http://yamayo.github.io/blog/2014/07/03/sidekiq-logrotate-usr2/"/>
+    <updated>2014-07-03T11:45:57+09:00</updated>
+    <id>http://yamayo.github.io/blog/2014/07/03/sidekiq-logrotate-usr2</id>
+    <content type="html"><![CDATA[<p>Unicorn に USR1 のシグナルを送ることでログファイルを reopen 出来ることは知っていたのですが、<br/>
+Sidekiq だと下記にあるように USR2 なんですね。<br/>
+<a href="http://github.com/mperham/sidekiq/wiki/Signals">http://github.com/mperham/sidekiq/wiki/Signals</a></p>
+
+<p>以下は同プロジェクトに Unicorn と Sidekiq がある場合の、logrotate の書き方の例です。</p>
+
+<p>```
+/data/my_rails_app/shared/log/*.log {
+  create 0644 yamayo yamayo
+  daily
+  missingok
+  rotate 10
+  size 10M
+  dateext
+  notifempty
+  copytruncate</p>
+
+<p>  compress
+  delaycompress</p>
+
+<p>  lastaction</p>
+
+<pre><code>unicorn_pid=/data/my_rails_app/shared/tmp/pids/unicorn.pid
+test -s $pid &amp;&amp; kill -USR1 "$(cat $unicorn_pid)"
+
+sidekiq_pid=/data/my_rails_app/shared/tmp/pids/sidekiq.pid
+test -s $pid &amp;&amp; kill -USR2 "$(cat $sidekiq_pid)"
+</code></pre>
+
+<p>  endscript
+}
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

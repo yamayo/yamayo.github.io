@@ -5,25 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>RSpec の shared_examples にブロック引数を渡す - northaven</title>
+  <title>sidekiq で logrotate を使うときは USR2 シグナルを送る - northaven</title>
   <meta name="author" content="yamayo">
 
   
-  <meta name="description" content="RSpec の shared_examples は便利ですが、複数の example でちょっとだけ内容を変更したい場合があります。
-そんなときは shard_examples にブロック引数が渡せるので、それを使って変更できます。 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14 &hellip;">
+  <meta name="description" content="Unicorn に USR1 のシグナルを送ることでログファイルを reopen 出来ることは知っていたのですが、
+Sidekiq だと下記にあるように USR2 なんですね。
+http://github.com/mperham/sidekiq/wiki/Signals 以下は同プロジェクトに &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -32,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://yamayo.github.io/blog/2014/06/20/rspec-shared-examples-block-argument">
+  <link rel="canonical" href="http://yamayo.github.io/blog/2014/07/03/sidekiq-logrotate-usr2">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="northaven" type="application/atom+xml">
@@ -93,7 +81,7 @@
   
   <header>
     
-      <h1 class="entry-title">RSpec の shared_examples にブロック引数を渡す</h1>
+      <h1 class="entry-title">sidekiq で logrotate を使うときは USR2 シグナルを送る</h1>
     
     
       <p class="meta">
@@ -109,17 +97,20 @@
   
 
 
-<time datetime="2014-06-20T23:16:05+09:00" pubdate data-updated="true">2014/06/20</time>
+<time datetime="2014-07-03T11:45:57+09:00" pubdate data-updated="true">2014/07/03</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>RSpec の shared_examples は便利ですが、複数の example でちょっとだけ内容を変更したい場合があります。
-そんなときは shard_examples にブロック引数が渡せるので、それを使って変更できます。</p>
+<div class="entry-content"><p>Unicorn に USR1 のシグナルを送ることでログファイルを reopen 出来ることは知っていたのですが、<br/>
+Sidekiq だと下記にあるように USR2 なんですね。<br/>
+<a href="http://github.com/mperham/sidekiq/wiki/Signals">http://github.com/mperham/sidekiq/wiki/Signals</a></p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p>以下は同プロジェクトに Unicorn と Sidekiq がある場合の、logrotate の書き方の例です。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -136,24 +127,33 @@
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">shared_examples</span> <span class="s1">&#39;Series of processes&#39;</span> <span class="k">do</span> <span class="o">|</span><span class="n">type</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">it</span> <span class="p">{</span> <span class="n">expect</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:send_messages</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">it</span> <span class="p">{</span> <span class="n">expect</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:receive_message</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="k">if</span> <span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;foo&#39;</span>
-</span><span class='line'>    <span class="n">it</span> <span class="p">{</span> <span class="n">expect</span><span class="p">(</span><span class="no">User</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:login</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="n">it</span> <span class="p">{</span> <span class="n">expect</span><span class="p">(</span><span class="no">User</span><span class="p">)</span><span class="o">.</span><span class="n">to_not</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:login</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/data/my_rails_app/shared/log/*.log {
+</span><span class='line'>  create 0644 yamayo yamayo
+</span><span class='line'>  daily
+</span><span class='line'>  missingok
+</span><span class='line'>  rotate 10
+</span><span class='line'>  size 10M
+</span><span class='line'>  dateext
+</span><span class='line'>  notifempty
+</span><span class='line'>  copytruncate
 </span><span class='line'>
-</span><span class='line'><span class="n">context</span> <span class="s1">&#39;foo&#39;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it_behaves_like</span> <span class="s1">&#39;Series of processes&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span>
-</span><span class='line'><span class="k">end</span>
+</span><span class='line'>  compress
+</span><span class='line'>  delaycompress
 </span><span class='line'>
-</span><span class='line'><span class="n">context</span> <span class="s1">&#39;bar&#39;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">it_behaves_like</span> <span class="s1">&#39;Series of processes&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>  lastaction
+</span><span class='line'>    unicorn_pid=/data/my_rails_app/shared/tmp/pids/unicorn.pid
+</span><span class='line'>    test -s $pid && kill -USR1 "$(cat $unicorn_pid)"
+</span><span class='line'>
+</span><span class='line'>    sidekiq_pid=/data/my_rails_app/shared/tmp/pids/sidekiq.pid
+</span><span class='line'>    test -s $pid && kill -USR2 "$(cat $sidekiq_pid)"
+</span><span class='line'>  endscript
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
 
 </div>
 
@@ -177,12 +177,12 @@
   
 
 
-<time datetime="2014-06-20T23:16:05+09:00" pubdate data-updated="true">2014/06/20</time>
+<time datetime="2014-07-03T11:45:57+09:00" pubdate data-updated="true">2014/07/03</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/rspec/'>RSpec</a>
+    <a class='category' href='/blog/categories/sidekiq/'>Sidekiq</a>
   
 </span>
 
@@ -190,9 +190,9 @@
     </p>
     
       <div class="sharing">
-  <a href="http://b.hatena.ne.jp/entry/http://yamayo.github.io/blog/2014/06/20/rspec-shared-examples-block-argument/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+  <a href="http://b.hatena.ne.jp/entry/http://yamayo.github.io/blog/2014/07/03/sidekiq-logrotate-usr2/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://yamayo.github.io/blog/2014/06/20/rspec-shared-examples-block-argument/" data-via="" data-counturl="http://yamayo.github.io/blog/2014/06/20/rspec-shared-examples-block-argument/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://yamayo.github.io/blog/2014/07/03/sidekiq-logrotate-usr2/" data-via="" data-counturl="http://yamayo.github.io/blog/2014/07/03/sidekiq-logrotate-usr2/" >Tweet</a>
   
   
   
@@ -203,10 +203,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/06/06/rake-before-task-hook/" title="Previous Post: Rake で before task をフックする">&laquo; Rake で before task をフックする</a>
+        <a class="basic-alignment left" href="/blog/2014/06/20/rspec-shared-examples-block-argument/" title="Previous Post: RSpec の shared_examples にブロック引数を渡す">&laquo; RSpec の shared_examples にブロック引数を渡す</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/07/03/sidekiq-logrotate-usr2/" title="Next Post: sidekiq で logrotate を使うときは USR2 シグナルを送る">sidekiq で logrotate を使うときは USR2 シグナルを送る &raquo;</a>
       
     </p>
   </footer>
