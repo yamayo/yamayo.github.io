@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "sidekiq で logrotate を使うときは USR2 シグナルを送る"
+title: "Sidekiq で logrotate を使うときは USR2 シグナルを送る"
 date: 2014-07-03 11:45:57 +0900
 comments: true
 sharing: true
